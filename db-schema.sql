@@ -18,15 +18,6 @@ CREATE TABLE Employee.Employee
 	EmployeeID INT PRIMARY KEY,
 	EmployeeFirstName varchar(30),
 	EmployeeLastName varchar(30),
-	RoleId INT,
-	Department VARCHAR(30),
-	EmployeeSalary DECIMAL(8,4),
-	EmployeeSavings DECIMAL(12,4),
-	SalaryCTC DECIMAL(8,4),
-	PFDeduction DECIMAL(8,4),
-	SalaryIncrement DECIMAL(5,4),
-	NetSalary DECIMAL(8,4),
-	OtherDeduction DECIMAL(5,4)
 
 );
 GO
@@ -42,6 +33,12 @@ CREATE TABLE Employee.EmployeeRole
 	Salary DECIMAL(8,3), 
 	Startdate DATE,
 	Finishdate DATE,
+	EmployeeSavings DECIMAL(12,4),
+	SalaryCTC DECIMAL(8,4),
+	PFDeduction DECIMAL(8,4),
+	SalaryIncrement DECIMAL(5,4),
+	NetSalary DECIMAL(8,4),
+	OtherDeduction DECIMAL(5,4)
 	
 );
 GO

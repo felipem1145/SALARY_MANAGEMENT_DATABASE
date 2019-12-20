@@ -28,6 +28,7 @@ CREATE TABLE Employee.Employee
 );
 GO
 
+<<<<<<< HEAD
 DROP TABLE IF EXISTS Company.CompanyRoles
 CREATE TABLE Company.CompanyRoles
 (
@@ -42,6 +43,9 @@ GO
 ALTER TABLE Company.CompanyRoles
 	ADD CONSTRAINT CHK_ExpectedCTC CHECK(ExpectedCTC>30000 AND ExpectedCTC < 200000)
 
+=======
+
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 DROP TABLE IF EXISTS Employee.EmployeeRole
 CREATE TABLE Employee.EmployeeRole
 (
@@ -69,6 +73,7 @@ ALTER TABLE Employee.EmployeeRole
 	ADD CONSTRAINT CHK_Salary CHECK(Salary<=150000 AND Salary >=30000);
 
 
+<<<<<<< HEAD
 CREATE TABLE Company.Projects
 (
 	ProjectID INT IDENTITY(1,1) PRIMARY KEY,
@@ -78,6 +83,8 @@ CREATE TABLE Company.Projects
 
 GO
 
+=======
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 DROP TABLE IF EXISTS Employee.EmployeeProject
 CREATE TABLE Employee.EmployeeProject
 
@@ -98,7 +105,24 @@ ALTER TABLE Employee.EmployeeProject
 	ADD CONSTRAINT FK_ProjectId FOREIGN KEY (ProjectId) REFERENCES Company.Projects(ProjectID)
 ALTER TABLE Employee.EmployeeProject
 	ADD CONSTRAINT CHK_ExpectedFinishDate CHECK(ExpectedFinishDate > (SYSDATETIME()))
+<<<<<<< HEAD
+=======
+
+
+DROP TABLE IF EXISTS Company.CompanyRoles
+CREATE TABLE Company.CompanyRoles
+(
+	RoleID INT PRIMARY KEY,
+	Department VARCHAR(50), 
+	Position VARCHAR(50),
+	ExpectedCTC DECIMAL(12,3) 
+);
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 GO
+
+--CONSTRAINT
+ALTER TABLE Company.CompanyRoles
+	ADD CONSTRAINT CHK_ExpectedCTC CHECK(ExpectedCTC>30000 AND ExpectedCTC < 200000)
 
 
 
@@ -154,6 +178,57 @@ GROUP BY Company.CompanyRoles.Department
 GO
 
 
+<<<<<<< HEAD
+=======
+------------------------------------------------VIEWS REPORTS----------------------------------------------------------------
+
+---Projects by position
+
+CREATE VIEW Company.RoleProject
+AS
+SELECT Company.CompanyRoles.Position, COUNT(Company.Projects.ProjectID) AS TotalProjects
+FROM Company.Projects
+	JOIN Employee.EmployeeProject
+		ON Company.Projects.ProjectID=Employee.EmployeeProject.ProjectId
+	JOIN Employee.EmployeeRole
+		ON Employee.EmployeeProject.EmployeeId=Employee.EmployeeRole.EmployeeID
+	JOIN Company.CompanyRoles
+		ON Employee.EmployeeRole.RoleID=Company.CompanyRoles.RoleID
+GROUP BY Company.CompanyRoles.Position
+
+SELECT * FROM Company.RoleProject
+
+
+
+---Projects by department
+
+
+CREATE VIEW Company.DepartmentProject
+AS
+SELECT Company.CompanyRoles.Department, COUNT(Company.Projects.ProjectID) AS TotalProjects
+FROM Company.Projects
+	JOIN Employee.EmployeeProject
+		ON Company.Projects.ProjectID=Employee.EmployeeProject.ProjectId
+	JOIN Employee.EmployeeRole
+		ON Employee.EmployeeProject.EmployeeId=Employee.EmployeeRole.EmployeeID
+	JOIN Company.CompanyRoles
+		ON Employee.EmployeeRole.RoleID=Company.CompanyRoles.RoleID
+GROUP BY Company.CompanyRoles.Department
+
+
+----Salary by deparment
+
+CREATE VIEW Company.DepartmentSalary
+AS
+SELECT Company.CompanyRoles.Department, SUM(Employee.EmployeeRole.SalaryCTC) AS TotalSalary
+FROM Company.CompanyRoles
+	JOIN Employee.EmployeeRole
+		ON Company.CompanyRoles.RoleID = Employee.EmployeeRole.RoleID
+GROUP BY Company.CompanyRoles.Department
+
+
+
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 -------------------------------------------STORE PROCEDURE----------------------------------------------------------------
 
 
@@ -176,7 +251,11 @@ CREATE PROCEDURE Employee.Employee_Update
 AS
 	UPDATE Employee.Employee
 	SET @FirstName=EmployeeFirstName,
+<<<<<<< HEAD
 		@LastName=EmployeeLastName
+=======
+		@LastName=EmployeeLastName,
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 	WHERE @ID=EmployeeID;
 GO
 
@@ -225,8 +304,13 @@ AS
 
 		RETURN @NumberProjects 
 	END;
+<<<<<<< HEAD
 GO
 
+=======
+
+SELECT Company.ProjectsToFinish('2020-01-01');
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 
 
 CREATE FUNCTION Employee.PFDeduction
@@ -243,12 +327,17 @@ AS
 	BEGIN 
 		DECLARE @PFDeduction DECIMAL(15,3)
 
+<<<<<<< HEAD
 		SELECT @PFDeduction = (Employee.EmployeeRole.Salary*0.11)
+=======
+		SELECT @PFDeduction = (Employee.EmployeeRole.Salary*0.8)
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805
 		FROM Employee.EmployeeRole
 		WHERE @ID=Employee.EmployeeRole.EmployeeID;
 
 		RETURN @PFDeduction
 	END;
+<<<<<<< HEAD
 GO
 
 ALTER TABLE Employee.EmployeeRole
@@ -280,3 +369,9 @@ GO
 ALTER TABLE Employee.EmployeeRole
 	ADD CONSTRAINT CHK_SalaryIncrement CHECK( SalaryIncrement <= (Employee.Increment(EmployeeID)))
 GO
+=======
+
+
+ALTER TABLE Employee.EmployeeRole
+	ADD CONSTRAINT CHK_PFDeduction CHECK(PFDeduction < (Employee.PFDeduction(EmployeeID)))
+>>>>>>> b7d351417aed0258ef2efe2bd8225dc2af707805

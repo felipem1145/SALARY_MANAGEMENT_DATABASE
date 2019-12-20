@@ -269,7 +269,7 @@ AS
 	BEGIN 
 		DECLARE @Increment DECIMAL(15,3)
 
-		SELECT @Increment = (Employee.EmployeeRole.Salary*0.075)
+		SELECT @Increment = (Employee.EmployeeRole.Salary*0.0755)
 		FROM Employee.EmployeeRole
 		WHERE @ID1=Employee.EmployeeRole.EmployeeID;
 
